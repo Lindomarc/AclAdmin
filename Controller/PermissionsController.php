@@ -71,7 +71,7 @@ class PermissionsController extends AclAdminAppController
 			foreach ($plugins as $plugin) {
 				$controllers_plugins[] = $this->AclUtility->getControllerList($plugin);
 			}			
-		}		
+		}
 		$controllers = array_merge($this->AclUtility->getControllerList(), $this->AclUtility->getControllerList($plugin));
 		$this->set(compact('controllers'));
 	}
@@ -137,6 +137,7 @@ class PermissionsController extends AclAdminAppController
 		}
 		$this->render(false);
 	}
+	
 	public function aco_sync() {
 		if($this->AclExtras->aco_sync($this->params)){
 			$this->Flash->success(__d('acl_admin', "ok"));

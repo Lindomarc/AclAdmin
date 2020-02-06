@@ -58,7 +58,7 @@
 								if ($level != 0) {
 									if ($roleId != 1) {
 										if ($permissions[$id][$roleId] === 1) {
-											$row[] = $this->Html->tag('span', __d('acl_admin', 'alowed'), array(
+											$row[] = $this->Html->tag('span', __d('acl_admin', 'allowed'), array(
 												'class' => 'label label-success permission-toggle',
 												'data-aco_id' => $id,
 												'data-aro_id' => $rolesAros[$roleId],

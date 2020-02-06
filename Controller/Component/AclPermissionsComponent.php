@@ -71,14 +71,7 @@ class AclPermissionsComponent extends Component
 			// se não é admin role_id = 1
 			if ($this->controller->Auth->user('role_id') != 1) {
 
-				if ($this->controller->Auth->user()) {
-					$roleID = $this->controller->Auth->user('role_id');
-				} else {
-					$id = ClassRegistry::init('Role')->field('id', array('alias' => 'public'));
-					ClassRegistry::init('Role')->id = $id;
-					$roleID =  ClassRegistry::init('Role')->exists() ? $id : 3;
-				}
-
+				$roleID = $this->controller->Auth->user('role_id');
 				$aro = $this->controller->Acl->Aro->find('first', array(
 					'conditions' => array(
 						'Aro.model' => 'Role',
@@ -89,7 +82,6 @@ class AclPermissionsComponent extends Component
 				$aroId = $aro['Aro']['id'];
 
 				$thisControllerNode = $this->controller->Acl->Aco->node('controllers' . $this->controller->name);
-				$this->log($thisControllerNode);
 				if ($thisControllerNode) {
 					$thisControllerActions = $this->controller->Acl->Aco->find('list', array(
 						'conditions' => array(

@@ -42,7 +42,6 @@ class AclUtilityComponent extends Component
 	public function aco_update($params = array())
 	{
 		$root = $this->_checkNode($this->rootNode, $this->rootNode, null);
-
 		if (empty($params['plugin'])) {
 			$controllers = $this->getControllerList();
 			$this->_updateControllers($root, $controllers);
@@ -96,8 +95,7 @@ class AclUtilityComponent extends Component
 				$controllers = array_merge($controllers, App::objects('plugin', null, false));
 			}
 			$controllerFlip = array_flip($controllers);
-
-			$this->Acl->Aco->id = $root['Aco']['id'];
+ 			$this->Acl->Aco->id = $root['Aco']['id'];
 			$controllerNodes = $this->Acl->Aco->children(null, true);
 			foreach ($controllerNodes as $ctrlNode) {
 				$alias = $ctrlNode['Aco']['alias'];
@@ -111,9 +109,7 @@ class AclUtilityComponent extends Component
 
 	/**
 	 * obter lista universal de Controllers
-	 *
 	 * @param $plugin se definido, irirá obter sua lista de Controllers
-	 * @return array
 	 **/
 	public function getControllerList($plugin = null)
 	{
@@ -125,14 +121,6 @@ class AclUtilityComponent extends Component
 		return $controllers;
 	}
 
-	/**
-	 * _checkNode - Check a node for existance
-	 *
-	 * @param string $path
-	 * @param string $alias
-	 * @param int $parentId
-	 * @return array Aco Node array
-	 */
 	protected function _checkNode($path, $alias, $parentId = null)
 	{
 		$node = $this->Acl->Aco->node($path);
@@ -147,7 +135,7 @@ class AclUtilityComponent extends Component
 	}
 
 	/**
-	 * _getCallbacks - Get a list of callback methods
+	 * Obter uma lista de métodos
 	 *
 	 * @return array
 	 **/
@@ -179,16 +167,18 @@ class AclUtilityComponent extends Component
 	}
 
 	/**
-	 * Contribute for updating Aco table checking controller Methods
-	 *
-	 * @param string $controller
-	 * @param array $node
-	 * @param string $plugin Allow check controllers methods found in an plugin
-	 * @return void
+	 * contribuir para "fitrar" lista de methods
 	 */
 	protected function _checkMethods($className, $controllerName, $node, $pluginPath = false)
 	{
+		$ignores = array(
+			'isAuthorized',
+			'appError'
+		);
+
 		$excludes = $this->_getCallbacks($className);
+		$excludes = Hash::merge($ignores,$excludes);
+
 		$baseMethods = get_class_methods('Controller');
 		$actions = get_class_methods($className);
 		if ($actions == null) {
@@ -196,8 +186,10 @@ class AclUtilityComponent extends Component
 
 			return false;
 		}
+
 		$methods = array_diff($actions, $baseMethods);
 		$methods = array_diff($methods, $excludes);
+
 		foreach ($methods as $action) {
 			if (strpos($action, '_', 0) === 0) {
 				continue;

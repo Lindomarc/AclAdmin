@@ -27,12 +27,8 @@ msgstr "Esta &aacute;rea tem acesso restrito"
 msgid "Sincronize"
 msgstr "Sincronizar"
 
-msgid "alowed"
-msgstr "permitido"
-
 msgid "denied"
 msgstr "negado"
 
 msgid "allowed"
 msgstr "permitido"
-
